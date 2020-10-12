@@ -1,31 +1,7 @@
-import { useEffect, useState } from 'react';
-import netlifyAuth from '../netlifyAuth.js';
+import { useAuthentication } from 'context/AuthContext';
 
 export default function Home() {
-  const [loggedIn, setLoggedIn] = useState(netlifyAuth.isAuthenticated);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    netlifyAuth.initialize((user) => {
-      setLoggedIn(!!user);
-      setUser(user);
-    });
-  }, [loggedIn]);
-
-  const login = () => {
-    netlifyAuth.authenticate((user) => {
-      setLoggedIn(!!user);
-      setUser(user);
-      netlifyAuth.closeModal();
-    });
-  };
-
-  const logout = () => {
-    netlifyAuth.signout(() => {
-      setLoggedIn(false);
-      setUser(null);
-    });
-  };
+  const { loggedIn, login, logout, user } = useAuthentication();
 
   return (
     <>
